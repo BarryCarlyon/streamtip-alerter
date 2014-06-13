@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Streamtip Alerter Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="css/adminlte.css" media="screen">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-debounce.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/settings.js"></script>
+  </head>
+  <body>
+    <div class="row-fluid">
+      <div class="col-sm-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs" style="margin-bottom: 5px; margin-top: 5px;">
+            <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Alerts <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#alertFormatting" data-toggle="tab">Formatting</a></li>
+                <li><a href="#alertSounds" data-toggle="tab">Sounds</a></li>
+                <li><a href="#alertSettings" data-toggle="tab">Settings</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade active in" id="login">
+              <div class="callout callout-danger">
+                <h4>Hey!</h4>
+                <p>
+                  Do not show your API login information on stream, as it can put your account at risk.
+                </p>
+              </div>
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="clientId" class="col-sm-3 control-label">Client ID</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="clientId">
+                      <span class="help-block">This is the "API Client ID" from your account page.</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="accessToken" class="col-sm-3 control-label">Access Token</label>
+                    <div class="col-sm-9">
+                      <input type="password" class="form-control" id="accessToken">
+                      <span class="help-block">This is the "API Access Token" from your account page.</span>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="alertFormatting">
+              <p>
+                Here you can configure how your alerts will look. You will need to use the following variables in order to include data in the text output.
+              </p>
+              <div class="callout callout-info">
+                <h4>Hey!</h4>
+                <p>
+                  The text files to import into streaming clients are located inside the Streamtip folder within your Documents folder.
+                </p>
+              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 30%;">Variable</th>
+                    <th style="width: 70%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>{{amount}}</code></td>
+                    <td>the amount the tip was worth</td>
+                  </tr>
+                  <tr>
+                    <td><code>{{count}}</code></td>
+                    <td>the number of the tip (useful for lists)</td>
+                  </tr>
+                  <tr>
+                    <td><code>{{note}}</code></td>
+                    <td>the note that was attached with a tip</td>
+                  </tr>
+                  <tr>
+                    <td><code>{{processor}}</code></td>
+                    <td>the processor of the transaction (Blockchain or PayPal)</td>
+                  </tr>
+                  <tr>
+                    <td><code>{{username}}</code></td>
+                    <td>the username of the person that sent you a tip</td>
+                  </tr>
+                </tbody>
+              </table>
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="topTipFormatting" class="col-sm-3 control-label">Top Tip</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" id="topTipFormatting"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="recentTipFormatting" class="col-sm-3 control-label">Recent Tip</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" id="recentTipFormatting"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="tipListFormatting" class="col-sm-3 control-label">Tip List</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" id="tipListFormatting"></textarea>
+                      <span class="help-block">This is for a single tip on the list. Each tip will be combined together.</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="tipListAmount" class="col-sm-3 control-label">Tip List Amount</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="tipListAmount" style="width: 100px;">
+                      <span class="help-block">The number of tips to show in the list format above (1-25)</span>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="alertSounds">
+              <p>
+                Here you can configure how your alerts will sound. To not play a sound, clear it. File extensions .mp3 and .wav are supported.
+              </p>
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="topTipSound" class="col-sm-3 control-label">Top Tip</label>
+                    <div class="col-sm-9">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="topTipSound" disabled>
+                        <span class="input-group-btn"><a href="#" id="topTipSoundSet" class="btn btn-default">Select</a></span>
+                        <span class="input-group-btn"><a href="#" id="topTipSoundClear" class="btn btn-danger">Clear</a></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="recentTipSound" class="col-sm-3 control-label">Recent Tip</label>
+                    <div class="col-sm-9">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="recentTipSound" disabled>
+                        <span class="input-group-btn"><a href="#" id="recentTipSoundSet" class="btn btn-default">Select</a></span>
+                        <span class="input-group-btn"><a href="#" id="recentTipSoundClear" class="btn btn-danger">Clear</a></span>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="alertSettings">
+              <p>
+                Here you can configure a few miscellaneous settings for alerts.
+              </p>
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="minimumAmount" class="col-sm-3 control-label">Minimum</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="minimumAmount" style="width: 100px;">
+                      <span class="help-block">This is the minimum amount you'd like to be processed.</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Reset on Open</label>
+                    <div class="col-sm-9">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="dailyTipList" value="true">&nbsp;&nbsp;Tip List
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="dailyRecentTip" value="true">&nbsp;&nbsp;Most Recent Tip
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="dailyTopTip" value="true">&nbsp;&nbsp;Top Tip
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
