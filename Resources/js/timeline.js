@@ -54,11 +54,11 @@ Timeline.prototype.parseNote = function(note) {
 
 Timeline.prototype.getAvatar = function(user, email, callback) {
     var email = email || user+'@users.twitch.tv';
-    var avatar = "https://secure.gravatar.com/avatar/"+MD5(email)+"?d=retro";
+    var avatar = "http://gravatar.com/avatar/"+MD5(email)+"?d=retro";
 
     $.getJSON('https://api.twitch.tv/kraken/users/'+encodeURIComponent(user)).done(function(data) {
         if(data.logo) {
-            avatar = data.logo.replace(/^http/, 'https');
+            avatar = data.logo;
         }
         callback(avatar);
     }).fail(function() {
@@ -72,7 +72,7 @@ Timeline.prototype.load = function() {
     if($('.timeline-empty').length) {
         $('.timeline-empty').replaceWith(this.emptyTemplate());
     } else {
-        $('.timeline li').last().after(this.emptyTemplate());
+        $('.time-label').after(this.emptyTemplate());
     }
 }
 
@@ -82,7 +82,7 @@ Timeline.prototype.configure = function() {
     if($('.timeline-empty').length) {
         $('.timeline-empty').replaceWith(this.configureTemplate());
     } else {
-        $('.timeline li').last().after(this.configureTemplate());
+        $('.time-label').after(this.configureTemplate());
     }
 }
 
@@ -97,7 +97,7 @@ Timeline.prototype.addTip = function(tipObj) {
                     .replace('{{date}}', moment(tipObj.date).format('h:mm:ss a'))
                     .replace('{{avatar}}', avatar);
 
-        $('.timeline li').last().before(html);
+        $('.time-label').after(html);
         $('.timeline-empty').remove();
     });
 }

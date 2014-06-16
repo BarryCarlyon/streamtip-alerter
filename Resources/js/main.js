@@ -133,6 +133,7 @@ StreamtipAlerter.prototype.playSound = function(type) {
     console.log(this['_'+type+'TipSound'])
     if(!this['_'+type+'TipSound']) return;
 
+    this['_'+type+'TipSound'].stop();
     this['_'+type+'TipSound'].play();
 }
 
@@ -175,7 +176,7 @@ StreamtipAlerter.prototype.connectToSocketServer = function(id, token) {
 
     var client = new Faye.Client('https://streamtip.com/faye', {
         timeout: 30,
-        retry: 5
+        retry: 15
     });
 
     client.addExtension({
@@ -185,7 +186,6 @@ StreamtipAlerter.prototype.connectToSocketServer = function(id, token) {
             }                                         // from the server throughout your session
             if(message.error && message.error === "401::Access Denied") {
                 _self._loggedIn = false;
-                client.disconnect();
                 _self.timeline.configure();
             }
             callback(message);
