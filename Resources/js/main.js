@@ -60,12 +60,12 @@ StreamtipAlerter.prototype.parseType = function(value) {
     } else if(/^[0-9]+(?:.[0-9]+)?$/.test(value)) {
         return parseFloat(value);
     } else {
-        return value;
+        return decodeURIComponent(value);
     }
 }
 
 StreamtipAlerter.prototype.saveSetting = function(name, value) {
-    Ti.App.Properties.setString('st_'+name, (value+'').replace(/\\/g, '\\\\'));
+    Ti.App.Properties.setString('st_'+name, encodeURIComponent((value+'').replace(/\\/g, '\\\\')));
     this.settings[name] = this.parseType(value);
 }
 
