@@ -55,10 +55,6 @@ StreamtipAlerter.prototype.parseType = function(value) {
         return false;
     } else if(value === "") {
         return "";
-    } else if(/^[0-9]+$/.test(value)) {
-        return parseInt(value);
-    } else if(/^[0-9]+(?:.[0-9]+)?$/.test(value)) {
-        return parseFloat(value);
     } else {
         return decodeURIComponent(value);
     }
@@ -128,9 +124,6 @@ StreamtipAlerter.prototype.setupWindow = function() {
 }
 
 StreamtipAlerter.prototype.playSound = function(type) {
-    console.log(type);
-    console.log('_'+type+'TipSound');
-    console.log(this['_'+type+'TipSound'])
     if(!this['_'+type+'TipSound']) return;
 
     this['_'+type+'TipSound'].stop();
@@ -144,6 +137,8 @@ StreamtipAlerter.prototype.loadSounds = function() {
             var path = file.nativePath();
             this._recentTipSound = Ti.Media.createSound(path);
         }
+    } else {
+        this._recentTipSound = null;
     }
 
     if(this.settings['topTipSound'].length) {
@@ -152,6 +147,8 @@ StreamtipAlerter.prototype.loadSounds = function() {
             var path = file.nativePath();
             this._topTipSound = Ti.Media.createSound(path);
         }
+    } else {
+        this._topTipSound = null;
     }
 }
 
@@ -159,7 +156,7 @@ StreamtipAlerter.prototype.login = function() {
     if(this._loggedIn) return;
 
     var _self = this;
-    $.getJSON('https://streamtip.com/api/tips?client_id='+encodeURIComponent(this.settings['clientId'])+'&access_token='+encodeURIComponent(this.settings['accessToken'])+'&limit=1').always(function() {
+    $.getJSON('http://streamtip.com/api/tips?tidesdk=true&client_id='+encodeURIComponent(this.settings['clientId'])+'&access_token='+encodeURIComponent(this.settings['accessToken'])+'&limit=1').always(function() {
         _self.timeline = new Timeline();
         _self.files = new Files(_self);
     }).done(function(data) {
@@ -174,9 +171,9 @@ StreamtipAlerter.prototype.connectToSocketServer = function(id, token) {
     var client_id = id;       // Client id from the Account area
     var access_token = token; // Access token from the Account area
 
-    var client = new Faye.Client('https://streamtip.com/faye', {
+    var client = new Faye.Client('http://streamtip.com/faye', {
         timeout: 30,
-        retry: 15
+        retry: 30
     });
 
     client.addExtension({
@@ -204,7 +201,7 @@ StreamtipAlerter.prototype.connectToSocketServer = function(id, token) {
         if(data.note) data.note = _self.cleanTipInput(data.note);
         if(data.username) data.username = _self.cleanTipInput(data.username);
 
-        _self.files.newTip(data)
+        _self.files.newTip(data);
         _self.timeline.addTip(data);
 
         console.log(data);

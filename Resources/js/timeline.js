@@ -56,7 +56,7 @@ Timeline.prototype.getAvatar = function(user, email, callback) {
     var email = email || user+'@users.twitch.tv';
     var avatar = "http://gravatar.com/avatar/"+MD5(email)+"?d=retro";
 
-    $.getJSON('https://api.twitch.tv/kraken/users/'+encodeURIComponent(user)).done(function(data) {
+    $.getJSON('http://api.twitch.tv/kraken/users/'+encodeURIComponent(user)+'?on_site=1').done(function(data) {
         if(data.logo) {
             avatar = data.logo;
         }

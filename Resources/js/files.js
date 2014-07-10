@@ -89,9 +89,7 @@ Files.prototype.load = function() {
             date_from: today.toISOString(),
             limit: 1
         }, function(data) {
-            if(data.status !== 200 || !data.tips.length) return;
-
-            _self.tips.top = data.tips[0];
+            if(data.status == 200 && data.tips.length) _self.tips.top = data.tips[0];
             _self.updateFile('top');
         });
     } else {
@@ -103,9 +101,7 @@ Files.prototype.load = function() {
         this.grabTips({
             limit: 1
         }, function(data) {
-            if(data.status !== 200 || !data.tips.length) return;
-
-            _self.tips.recent = data.tips[0];
+            if(data.status == 200 && data.tips.length) _self.tips.top = data.tips[0];
             _self.updateFile('recent');
         });
     } else {
@@ -117,9 +113,7 @@ Files.prototype.load = function() {
         this.grabTips({
             limit: this.settings.tipListAmount
         }, function(data) {
-            if(data.status !== 200 || !data.tips.length) return;
-
-            _self.tips.list = data.tips;
+            if(data.status == 200 && data.tips.length) _self.tips.top = data.tips[0];
             _self.updateFile('list');
         });
     } else {

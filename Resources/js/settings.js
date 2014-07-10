@@ -31,7 +31,7 @@ $(document).ready(function() {
         var clientId = $('#clientId').val().trim();
         var accessToken = $('#accessToken').val().trim();
 
-        $.getJSON('https://streamtip.com/api/tips?client_id='+encodeURIComponent(clientId)+'&access_token='+encodeURIComponent(accessToken)+'&limit=1').done(function(data) {
+        $.getJSON('http://streamtip.com/api/tips?tidesdk=true&client_id='+encodeURIComponent(clientId)+'&access_token='+encodeURIComponent(accessToken)+'&limit=1').done(function(data) {
             $('#clientId, #accessToken').parent().parent().addClass('has-success').removeClass('has-error');
             settings.clientId = clientId;
             settings.accessToken = accessToken;
