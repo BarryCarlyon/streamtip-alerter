@@ -21,7 +21,7 @@ Files.prototype.grabTips = function(query, callback) {
         queryString += ((queryString === '?') ? '' : '&') + encodeURIComponent(name)+'='+encodeURIComponent(query[name]);
     });
 
-    $.getJSON('https://streamtip.com/api/tips'+queryString).done(function(data) {
+    $.getJSON('http://streamtip.com/api/tips'+queryString+'&tidesdk=true').done(function(data) {
         callback(data);
     }).fail(function(data) {
         callback(data);
